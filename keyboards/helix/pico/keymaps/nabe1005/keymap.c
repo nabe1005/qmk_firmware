@@ -64,11 +64,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_LCTL, KC_LALT,  KC_LGUI, KC_LGUI, EISU,  LOWER,   KC_SPC,  KC_ENT,  RAISE,   KANA,    KC_RGUI, KC_RGUI, _______, _______
       ),
 
-    /* EUCALYN
+  /* EUCALYN
    * ,-----------------------------------------.             ,-----------------------------------------.
    * | Esc  |   Q  |   W  |   ,  |   .  |   ;  |             |   M  |   R  |   D  |   Y  |   P  | Bksp |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * | Tab  |   A  |   O  |   E  |   U  |   I  |             |   G  |   T  |   K  |   S  |   N  |      |
+   * | Tab  |   A  |   O  |   E  |   U  |   I  |             |   G  |   K  |   T  |   N  |   S  |      |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * | Shift|   Z  |   X  |   C  |   V  |   F  |             |   B  |   H  |   J  |   L  |   /  |Shift |
    * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
@@ -78,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_EUCALYN] = LAYOUT(
       KC_ESC,  DV_Q,     DV_W,    DV_COMM, DV_DOT, DV_QUOT,                   DV_M,    DV_R,    DV_D,    DV_Y,    DV_P,    KC_BSPC,
-      KC_TAB,  DV_A,     DV_O,    DV_E,    DV_U,   DV_I,                      DV_G,    DV_T,    DV_K,    DV_S,    DV_N,    _______,
+      KC_TAB,  DV_A,     DV_O,    DV_E,    DV_U,   DV_I,                      DV_G,    DV_K,    DV_T,    DV_N,    DV_S,    _______,
       KC_LSFT, DV_Z,     DV_X,    DV_C,    DV_V,   DV_F,                      DV_B,    DV_H,    DV_J,    DV_L,    DV_SLSH,    KC_RSFT ,
       KC_LCTL, KC_LALT,  KC_LGUI, KC_LGUI, EISU,   LOWER,   KC_SPC,  KC_ENT,  RAISE,   KANA,    KC_RGUI, KC_RGUI, _______, _______
       ),
@@ -117,9 +117,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______, _______, DV_4,    DV_5,    DV_6,    _______,                   _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
       _______, _______, DV_7,    DV_8,    DV_9,    _______,                   _______, _______, _______, _______, _______, _______,
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
-      ),  /* Raise
+      ),
 
-  /* Aujust
+  /* Adjust
    * ,-----------------------------------------.             ,-----------------------------------------.
    * |Dvorak|      |      |      |      |      |             |      |      |      |      |      |EUCALYN|
    * |------+------+------+------+------+------|             |------+------+------+------+------+-------|
@@ -169,7 +169,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case EUCALYN:
       if (record->event.pressed) {
-        rgblight_mode(RGBLIGHT_MODE_TWINKLE);
+        #ifdef RGBLIGHT_ENABLE
+          rgblight_mode(RGBLIGHT_MODE_KNIGHT);
+        #endif
         persistent_default_layer_set(1UL<<_EUCALYN);
       }
     case RAISE:

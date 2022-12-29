@@ -18,8 +18,7 @@
 #include "quantum/keymap_extras/keymap_dvorak.h"
 
 #ifdef RGBLIGHT_ENABLE
-//Following line allows macro to read current RGB settings
-extern rgblight_config_t rgblight_config;
+  extern rgblight_config_t rgblight_config;
 #endif
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
@@ -27,27 +26,26 @@ extern rgblight_config_t rgblight_config;
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
 enum layer_number {
-    _QWERTY = 0,
+    _DVORAK = 0,
+    _EUCALYN,
     _LOWER,
     _RAISE,
+    _ADJUST,
 };
 
 enum custom_keycodes {
-  QWERTY = SAFE_RANGE,
-  COLEMAK,
-  DVORAK,
-  LOWER,
+  LOWER = SAFE_RANGE,
   RAISE,
   ADJUST,
-  BACKLIT,
   EISU,
   KANA,
-  RGBRST
+  DVORAK,
+  EUCALYN,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-  /* Qwerty
+  /* DVORAK
    * ,-----------------------------------------.             ,-----------------------------------------.
    * | Esc  |   '  |   ,  |   .  |   P  |   Y  |             |   F  |   G  |   C  |   R  |   L  | Bksp |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
@@ -59,18 +57,37 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * `-------------------------------------------------------------------------------------------------'
    */
 
-[_QWERTY] = LAYOUT(
+  [_DVORAK] = LAYOUT(
       KC_ESC,  DV_QUOT,  DV_COMM, DV_DOT,  DV_P,  DV_Y,                      DV_F,    DV_G,    DV_C,    DV_R,    DV_L,    KC_BSPC,
       KC_TAB,  DV_A,     DV_O,    DV_E,    DV_U,  DV_I,                      DV_D,    DV_H,    DV_T,    DV_N,    DV_S,    _______,
       KC_LSFT, DV_SCLN,  DV_Q,    DV_J,    DV_K,  DV_X,                      DV_B,    DV_M,    DV_W,    DV_V,    DV_Z,    KC_RSFT ,
       KC_LCTL, KC_LALT,  KC_LGUI, KC_LGUI, EISU,  LOWER,   KC_SPC,  KC_ENT,  RAISE,   KANA,    KC_RGUI, KC_RGUI, _______, _______
       ),
 
+    /* EUCALYN
+   * ,-----------------------------------------.             ,-----------------------------------------.
+   * | Esc  |   Q  |   W  |   ,  |   .  |   ;  |             |   M  |   R  |   D  |   Y  |   P  | Bksp |
+   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
+   * | Tab  |   A  |   O  |   E  |   U  |   I  |             |   G  |   T  |   K  |   S  |   N  |      |
+   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
+   * | Shift|   Z  |   X  |   C  |   V  |   F  |             |   B  |   H  |   J  |   L  |   /  |Shift |
+   * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
+   * | Ctrl | Alt  | GUI  | GUI  | EISU |Lower |Space |Enter |Raise | KANA | GUI  | GUI  |      |      |
+   * `-------------------------------------------------------------------------------------------------'
+   */
+
+  [_EUCALYN] = LAYOUT(
+      KC_ESC,  DV_Q,     DV_W,    DV_COMM, DV_DOT, DV_QUOT,                   DV_M,    DV_R,    DV_D,    DV_Y,    DV_P,    KC_BSPC,
+      KC_TAB,  DV_A,     DV_O,    DV_E,    DV_U,   DV_I,                      DV_G,    DV_T,    DV_K,    DV_S,    DV_N,    _______,
+      KC_LSFT, DV_Z,     DV_X,    DV_C,    DV_V,   DV_F,                      DV_B,    DV_H,    DV_J,    DV_L,    DV_SLSH,    KC_RSFT ,
+      KC_LCTL, KC_LALT,  KC_LGUI, KC_LGUI, EISU,   LOWER,   KC_SPC,  KC_ENT,  RAISE,   KANA,    KC_RGUI, KC_RGUI, _______, _______
+      ),
+
   /* Lower
    * ,-----------------------------------------.             ,-----------------------------------------.
    * |      |   0  |   1  |   2  |   3  |  |   |             |   `  |   (  |   )  |   /  |   \  |      |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * |      |      |   4  |   5  |   6  |  &   |             |   =  |   [  |   ]  |   _  |   -  |      |
+   * |      |   '  |   4  |   5  |   6  |  &   |             |   =  |   [  |   ]  |   _  |   -  |      |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * |      |      |   7  |   8  |   9  |  ?   |             |   +  |   <  |   >  |      |      |      |
    * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
@@ -79,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_LOWER] = LAYOUT(
       _______, DV_0,    DV_1,    DV_2,    DV_3,    DV_PIPE,                   DV_QUOT, DV_LPRN, DV_RPRN, DV_SLSH, DV_BSLS, _______,
-      _______, _______, DV_4,    DV_5,    DV_6,    DV_AMPR,                   DV_EQL,  DV_LBRC, DV_RBRC, DV_UNDS, DV_MINS, _______,
+      _______, DV_QUOT, DV_4,    DV_5,    DV_6,    DV_AMPR,                   DV_EQL,  DV_LBRC, DV_RBRC, DV_UNDS, DV_MINS, _______,
       _______, _______, DV_7,    DV_8,    DV_9,    DV_QUES,                   DV_PLUS, DV_LABK, DV_RABK, _______, _______, _______,
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
       ),
@@ -100,20 +117,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______, _______, DV_4,    DV_5,    DV_6,    _______,                   _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
       _______, _______, DV_7,    DV_8,    DV_9,    _______,                   _______, _______, _______, _______, _______, _______,
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+      ),  /* Raise
+
+  /* Aujust
+   * ,-----------------------------------------.             ,-----------------------------------------.
+   * |Dvorak|      |      |      |      |      |             |      |      |      |      |      |EUCALYN|
+   * |------+------+------+------+------+------|             |------+------+------+------+------+-------|
+   * |      |      |      |      |      |      |             |      |      |      |      |      |       |
+   * |------+------+------+------+------+------|             |------+------+------+------+------+-------|
+   * |      |      |      |      |      |      |             |      |      |      |      |      |       |
+   * |------+------+------+------+------+------+-------------+------+------+------+------+------+-------|
+   * |      |      |      |      |      |      |RESET |      |      |      |      |      |      |       |
+   * `--------------------------------------------------------------------------------------------------'
+   */
+  [_ADJUST] = LAYOUT(
+      DVORAK,  _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, EUCALYN,
+      _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______, QK_BOOT, _______, _______, _______, _______, _______, _______, _______
       ),
 };
-
-
-
-#ifdef AUDIO_ENABLE
-
-float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
-float tone_dvorak[][2]     = SONG(DVORAK_SOUND);
-float tone_colemak[][2]    = SONG(COLEMAK_SOUND);
-float tone_plover[][2]     = SONG(PLOVER_SOUND);
-float tone_plover_gb[][2]  = SONG(PLOVER_GOODBYE_SOUND);
-float music_scale[][2]     = SONG(MUSIC_SCALE_SOUND);
-#endif
 
 // define variables for reactive RGB
 bool TOG_STATUS = false;
@@ -128,7 +151,7 @@ void persistent_default_layer_set(uint16_t default_layer) {
 void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
   if (IS_LAYER_ON(layer1) && IS_LAYER_ON(layer2)) {
     #ifdef RGBLIGHT_ENABLE
-      //rgblight_mode(RGB_current_mode);
+      rgblight_mode(RGB_current_mode);
     #endif
     layer_on(layer3);
   } else {
@@ -138,54 +161,30 @@ void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case QWERTY:
+    case DVORAK:
       if (record->event.pressed) {
-        #ifdef AUDIO_ENABLE
-          PLAY_SONG(tone_qwerty);
-        #endif
-        persistent_default_layer_set(1UL<<_QWERTY);
+        persistent_default_layer_set(1UL<<_DVORAK);
       }
       return false;
       break;
-    case LOWER:
+    case EUCALYN:
       if (record->event.pressed) {
-          //not sure how to have keyboard check mode and set it to a variable, so my work around
-          //uses another variable that would be set to true after the first time a reactive key is pressed.
-        if (TOG_STATUS) { //TOG_STATUS checks is another reactive key currently pressed, only changes RGB mode if returns false
-        } else {
-          TOG_STATUS = !TOG_STATUS;
-          #ifdef RGBLIGHT_ENABLE
-            //rgblight_mode(RGBLIGHT_MODE_SNAKE + 1);
-          #endif
-        }
-        layer_on(_LOWER);
-        update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
-      } else {
-        #ifdef RGBLIGHT_ENABLE
-          //rgblight_mode(RGB_current_mode);   // revert RGB to initial mode prior to RGB mode change
-        #endif
-        TOG_STATUS = false;
-        layer_off(_LOWER);
-        update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
+        rgblight_mode(RGBLIGHT_MODE_TWINKLE);
+        persistent_default_layer_set(1UL<<_EUCALYN);
       }
-      return false;
-      break;
     case RAISE:
       if (record->event.pressed) {
-        //not sure how to have keyboard check mode and set it to a variable, so my work around
-        //uses another variable that would be set to true after the first time a reactive key is pressed.
-        if (TOG_STATUS) { //TOG_STATUS checks is another reactive key currently pressed, only changes RGB mode if returns false
-        } else {
+        if (!TOG_STATUS) {
           TOG_STATUS = !TOG_STATUS;
           #ifdef RGBLIGHT_ENABLE
-            //rgblight_mode(RGBLIGHT_MODE_SNAKE);
+            rgblight_mode(RGBLIGHT_MODE_SNAKE + 1);
           #endif
         }
         layer_on(_RAISE);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
       } else {
         #ifdef RGBLIGHT_ENABLE
-          //rgblight_mode(RGB_current_mode);  // revert RGB to initial mode prior to RGB mode change
+          rgblight_mode(RGBLIGHT_MODE_SNAKE);
         #endif
         layer_off(_RAISE);
         TOG_STATUS = false;
@@ -193,15 +192,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    // led operations - RGB mode change now updates the RGB_current_mode to allow the right RGB mode to be set after reactive keys are released
-    case RGB_MOD:
-      #ifdef RGBLIGHT_ENABLE
-        if (record->event.pressed) {
-          rgblight_mode(RGB_current_mode);
-          rgblight_step();
-          RGB_current_mode = rgblight_config.mode;
+    case LOWER:
+      if (record->event.pressed) {
+        if (!TOG_STATUS) {
+          TOG_STATUS = !TOG_STATUS;
+          #ifdef RGBLIGHT_ENABLE
+            rgblight_mode(RGBLIGHT_MODE_SNAKE + 1);
+          #endif
         }
-      #endif
+        layer_on(_LOWER);
+        update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
+      } else {
+        #ifdef RGBLIGHT_ENABLE
+          rgblight_mode(RGBLIGHT_MODE_SNAKE);
+        #endif
+        layer_off(_LOWER);
+        TOG_STATUS = false;
+        update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
+      }
       return false;
       break;
     case EISU:
@@ -228,50 +236,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case RGBRST:
-      #ifdef RGBLIGHT_ENABLE
-        if (record->event.pressed) {
-          eeconfig_update_rgblight_default();
-          rgblight_enable();
-          RGB_current_mode = rgblight_config.mode;
-        }
-      #endif
-      break;
   }
   return true;
 }
 
 void matrix_init_user(void) {
-    #ifdef AUDIO_ENABLE
-        startup_user();
-    #endif
-    #ifdef RGBLIGHT_ENABLE
-      RGB_current_mode = rgblight_config.mode;
-    #endif
+  #ifdef RGBLIGHT_ENABLE
+    RGB_current_mode = rgblight_config.mode;
+  #endif
 }
-
-
-#ifdef AUDIO_ENABLE
-
-void startup_user()
-{
-    _delay_ms(50); // gets rid of tick
-}
-
-void shutdown_user()
-{
-    _delay_ms(150);
-    stop_all_notes();
-}
-
-void music_on_user(void)
-{
-    music_scale_user();
-}
-
-void music_scale_user(void)
-{
-    PLAY_SONG(music_scale);
-}
-
-#endif

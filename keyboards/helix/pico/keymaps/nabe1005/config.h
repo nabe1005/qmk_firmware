@@ -21,10 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 // place overrides here
-
 #ifdef AUDIO_ENABLE
-  #define STARTUP_SONG SONG(STARTUP_SOUND)
-  #define AUDIO_CLICKY
+  #define STARTUP_SONG SONG(NOCTURNE_OP_9_NO_1)
+  // #define AUDIO_CLICKY
 #endif
 
 // If you need more program area, try select and reduce rgblight modes to use.
